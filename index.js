@@ -10,13 +10,14 @@ const imgRegex = /<img\s+src="\/qimages\/(\d+)"\s*\/?>/g;
 
 (async () => {
   //const data = await fetchBookDataFromApi('4cecd79c-edea-44e7-9f2f-3f949d9c9045'); // Algebra I
-  const data = await fetchBookDataFromApi('cd0cb9cd-9eaf-4783-8f80-da4690022cec'); // SAT Math
+  // const data = await fetchBookDataFromApi('cd0cb9cd-9eaf-4783-8f80-da4690022cec'); // SAT Math
+  const data = await fetchBookDataFromApi('f6e0aaba-aef2-43d5-8cd2-f2cfaf0780fd'); // Advanced Functions
 
   const logoImageSrc = toImageSource("prepbox_logo_back.png");
   const instructionImageSrc = toImageSource("instruction-cover.png");
   const instructionImageSrc2 = toImageSource("instruction-cover2.png");
   const instructionImageSrc3 = toImageSource("instruction-cover3.png");
-  const coverImageSrc = toImageSource("./cover_image/algebra-1.png");
+  const coverImageSrc = toImageSource("./cover_image/advanced-functions.png");
   const imageDataResponses = await fetchImages(data);
   const interFontRegularBase64 = fs.readFileSync("./Inter-Regular.txt", "utf8");
 
@@ -218,17 +219,17 @@ function buildInstructionPage() {
 
 function buildTableOfContent(data) {
   let tableOfContentsHtml =
-    '<div style="font-size: 18px;"><h1>Table of Contents</h1><ul>';
+    '<div style="font-size: 16px;"><h1>Table of Contents</h1><ul>';
   for (const [chapterIndex, chapter] of data.chapters.entries()) {
     const chapterId = `chapter-${chapterIndex}`;
-    tableOfContentsHtml += `<li style="font-size: 20px; page-break-inside: avoid;">
+    tableOfContentsHtml += `<li style="font-size: 16px; page-break-inside: avoid;">
                                     <a id="toc-${chapterId}" href="#${chapterId}"><strong>${chapter.name}</strong></a>
-                                    <span id="page-num-${chapterId}" style="display: inline-block; float: right; font-size: 18px"></span>
+                                    <span id="page-num-${chapterId}" style="display: inline-block; float: right; font-size: 16px"></span>
                                 <ul>`;
     for (const [materialIndex, material] of chapter.materials.entries()) {
       const materialId = `material-${chapterIndex}-${materialIndex}`;
       tableOfContentsHtml += `<li style="line-height: 1.5;"><a id="toc-${materialId}" href="#${materialId}">${material.name}</a>
-            <span id="page-num-${materialId}" style="display: inline-block; float: right; font-size: 18px"></span></li>`;
+            <span id="page-num-${materialId}" style="display: inline-block; float: right; font-size: 16px"></span></li>`;
     }
     tableOfContentsHtml += "</ul></li>";
   }
@@ -272,7 +273,7 @@ async function buildBookContent(imageDataResponses, data) {
         const topicQrCodeData = await QRCode.toDataURL(topicUrl);
         const maxTopicQuestion = questionCountGlobal + topic.questions.length;
         const topicHeader = `<div class= "topicContainer">
-                                <div style="font-size: 20px;">Accompanying lectures for questions ${
+                                <div style="font-size: 16px;">Accompanying lectures for questions ${
                                   questionCountGlobal + 1
                                 } - ${maxTopicQuestion}</div>
                                 <a style="margin-left: 100px; float: right;" href="${topicUrl}" target="_blank" rel="noopener noreferrer">
@@ -282,7 +283,7 @@ async function buildBookContent(imageDataResponses, data) {
                             <div style="clear: both;"></div>
                             <div class="separator">
                               <img class="logo-icon" src="${logoIcon}" />
-                              <hr class="question-separator" style="background-color: #333; width: 95%; height: 0px"></hr>
+                              <hr class="question-separator" style="background-color: #398fe5; width: 95%; height: 0px"></hr>
                             </div>
                             `; 
             
@@ -303,37 +304,37 @@ async function buildBookContent(imageDataResponses, data) {
             if (imageData && imageData.data) {
               question_html = question_html.replace(
                 imgMatch[0],
-                `<img style="display:block" src="${imageData.data.imageURL}"/>`
+                `<img style="display:block; max-height:400px" src="${imageData.data.imageURL}"/>`
               );
             }
             imageDataIndex++;
           }
-
+          const solutionUrl = `https://prepbox.io/worksheets/${data.common_name
+            }/${chapter.common_name}/${material.common_name}/${question.id
+            }/?lookup=qrcode`;
+          const qrCodeSolutionDataUrl = await QRCode.toDataURL(solutionUrl);
 
           content += `<div style="page-break-inside: avoid">
                         <div class="question-text not-first-question"> 
                           <span style="background-color: #565656; padding: 4px 16px; border-radius: 20px; color: white; margin: 0px 0 7px 0; break-inside: avoid">Question ${questionCountGlobal} </span> ${question_html}
                         </div>
-                      </div>`;
-          const solutionUrl = `https://prepbox.io/worksheets/${data.common_name
-            }/${chapter.common_name}/${material.common_name}/${question.id
-            }/?lookup=qrcode`;
-          const qrCodeSolutionDataUrl = await QRCode.toDataURL(solutionUrl);
+                      `
+          
           content += `<div class="answerContainer">
                         <div></div>
                         <div></div>
-                        
                         <div style="text-align: right; opacity: 0.8">Solution <br> Video </div>
                         <div class="qr-code">
                           <a target="_blank" href="${solutionUrl}">
                             <img style="width:100px" src="${qrCodeSolutionDataUrl}" />
                           </a>
                         </div>
-                    </div></div>`;
+                      </div>
+                      </div></div>`;
           if (questionCount % 3 !== 0) {
             content += `<div class="separator">
                           <img class="logo-icon" src="${logoIcon}" />
-                          <hr class="question-separator" style="background-color: #333; width: 95%; height: 0px"></hr>
+                          <hr class="question-separator" style="background-color: #398fe5; width: 95%; height: 0px"></hr>
                         </div>
                         `;
           }
@@ -385,8 +386,8 @@ async function getPdfConfig(page, imageSrc) {
     timeout: 0,
     displayHeaderFooter: true,
     headerTemplate: `
-        <div style="width: 100%; position: relative; font-size: 14px;margin-left: 89px; margin-top: 20px; line-height: 20%; margin-right: 89px;">
-          <img src="${imageSrc}" style="max-width: 45%; margin-left: -2.5cm;"/>
+        <div style="width: 100%; position: relative; font-size: 14px;margin-left: 89px; margin-top: 20px; line-height: 20%; margin-right: 89px; margin-bottom: 5px;">
+          <img src="${imageSrc}" style="max-width: 40%; margin-left: -2.5cm;"/>
         </div>`,
     footerTemplate: `      
         <div style="width: 100%; font-size: 15px; font-weight: 500; text-align: left; position: relative;">
@@ -479,7 +480,7 @@ function buildFinalHtml(customStyle, contentHtml, link) {
               
           .question-text {
               break-inside: avoid;
-              font-size: 19px;
+              font-size: 16px;
               margin-top: 20px;
               margin-bottom: 20px;
               min-height: 12vh;
@@ -521,7 +522,7 @@ function buildFinalHtml(customStyle, contentHtml, link) {
               margin-left: 10%;
               margin-right: 0%;
               margin-top: -10px;
-              font-size: 20px;
+              font-size: 16px;
           }
 
           .topicContainer {
