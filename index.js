@@ -316,7 +316,7 @@ async function buildBookContent(imageDataResponses, data) {
 
           content += `<div style="page-break-inside: avoid">
                         <div class="question-text not-first-question"> 
-                          <span style="background-color: #565656; padding: 4px 16px; border-radius: 20px; color: white; margin: 0px 0 7px 0; break-inside: avoid">Question ${questionCountGlobal} </span> ${question_html}
+                          <span style="background-color: #398fe5; padding: 4px 16px; color: white; margin: 5px 0 7px 0; break-inside: avoid">Question ${questionCountGlobal} </span> ${question_html}
                         </div>
                       `
           
@@ -479,7 +479,7 @@ function buildFinalHtml(customStyle, contentHtml, link) {
           }
               
           .question-text {
-              break-inside: avoid;
+              page-break-inside: avoid;
               font-size: 16px;
               margin-top: 20px;
               margin-bottom: 20px;
@@ -514,7 +514,7 @@ function buildFinalHtml(customStyle, contentHtml, link) {
           }  
               
           .answerContainer {
-              break-inside: avoid;
+              page-break-inside: avoid;
               display: flex;
               flex-direction: row;
               justify-content: flex-end;
