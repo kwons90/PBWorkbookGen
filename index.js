@@ -9,14 +9,18 @@ const imgRegex = /<img\s+src="\/qimages\/(\d+)"\s*\/?>/g;
 // const data = require("./book_data/fullbook.avg.json");
 
 (async () => {
-  const data = await fetchBookDataFromApi('1338c550-276b-4c39-b819-4956f3297b2d'); // 11 Math
+  // const data = await fetchBookDataFromApi('1338c550-276b-4c39-b819-4956f3297b2d'); // 11 Math
+  const data = await fetchBookDataFromApi('d0ec9c43-8af5-42e6-9d64-24a8c0ddf4ac'); // 10 Math
   // const data = await fetchBookDataFromApi('4cecd79c-edea-44e7-9f2f-3f949d9c9045'); // Algebra I
   // const data = await fetchBookDataFromApi('cd0cb9cd-9eaf-4783-8f80-da4690022cec'); // SAT Math
+  // const data = await fetchBookDataFromApi('cd0cb9cd-9eaf-4783-8f80-da4690022cec'); // SAT Math II
   // const data = await fetchBookDataFromApi('f6e0aaba-aef2-43d5-8cd2-f2cfaf0780fd'); // Advanced Functions
 
-  // const coverImageSrc = toImageSource("./cover_image/algebra-1.png");
-  const coverImageSrc = toImageSource("./cover_image/11-math.png");
-  // const coverImageSrc = toImageSource("./cover_image/advanced-functions.png");
+  // const coverImageSrc = toImageSource("./cover_image/algebra-1.png"); // US Algebra I Cover
+  // const coverImageSrc = toImageSource("./cover_image/11-math.png"); // 11-Math
+  const coverImageSrc = toImageSource("./cover_image/10-math.png"); // 10 Math
+  // const coverImageSrc = toImageSource("./cover_image/SAT-math-2.png"); // SAT Math II
+  // const coverImageSrc = toImageSource("./cover_image/advanced-functions.png"); // Advanced Functions Cover
 
   const logoImageSrc = toImageSource("prepbox_logo_back.png");
   const instructionImageSrc = toImageSource("instruction-cover.png");
